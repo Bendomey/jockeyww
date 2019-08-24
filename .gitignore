@@ -1,0 +1,4 @@
+node_modules
+variables.env
+.git
+app/Config/database.json
