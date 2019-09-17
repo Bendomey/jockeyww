@@ -25,11 +25,12 @@ mongoose.connect(process.env.DATABASE, {
     .then(() => console.log('MongoDB Connected'))
     .catch(err => console.log(err));
 
-//require models
-require('./Models/User');
-
 //create instance of the app
 const app = express();
+
+
+//require models
+require('./Models/User');
 
 // Passport Config
 // new Authentication(passport);
