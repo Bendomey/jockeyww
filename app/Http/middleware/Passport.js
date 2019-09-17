@@ -1,7 +1,7 @@
 const bcrypt = require('bcryptjs');
 const mongoose = require('mongoose');
-// const User = mongoose.model('User');
-const User = require('../../Models/User');
+const User = mongoose.model('User');
+// const User = require('../../Models/User');
 const LocalStragtegy = require('passport-local').Strategy;
 
 module.exports = function(passport) {

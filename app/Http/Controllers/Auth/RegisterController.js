@@ -3,8 +3,8 @@ const bcrypt = require('bcryptjs');
 const crypto = require('crypto');
 const mongoose = require('mongoose');
 //models
-// const User = mongoose.model('User');
-const User = require('../../../Models/User')
+const User = mongoose.model('User');
+// const User = require('../../../Models/User')
 
 
 exports.index = (req, res) => {
