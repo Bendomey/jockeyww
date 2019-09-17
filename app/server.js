@@ -1,5 +1,4 @@
 const express = require("express");
-const mongoose = require('mongoose');
 const passport = require('passport');
 const bodyParser = require('body-parser');
 const flash = require('connect-flash');
@@ -12,22 +11,9 @@ const Helpers = require('./Config/helpers');
 //create instance of the app
 const app = express();
 
-// import environmental variables from our variables.env file
-require('dotenv').config({ path: 'variables.env' });
-
 // Passport Config
 // new Authentication(passport);
 require('./Http/middleware/Passport')(passport);
-
-
-mongoose.connect(process.env.DATABASE, {
-        useNewUrlParser: true
-    })
-    .then(() => console.log('MongoDB Connected'))
-    .catch(err => console.log(err));
-
-//require models
-require('./Models/User');
 
 //set the view engine
 app.engine('ejs', require('express-ejs-extend'));
@@ -97,14 +83,5 @@ if (process.env.NODE_ENV === 'development') {
     // production error handler
     app.use(ErrorHandlers.productionErrors);
 }
-
-const PORT = process.env.PORT || 5000;
-
-//now listen on the port for requests
-app.listen(PORT, (error) => {
-    if (error) throw error;
-    console.log(`Server running and receiving request on port: ${PORT}`)
-});
-
 
 module.exports = app;
