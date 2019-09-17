@@ -30,7 +30,7 @@ const app = express();
 
 
 //require models
-require('./Models/User');
+require('./Models/user');
 
 // Passport Config
 // new Authentication(passport);

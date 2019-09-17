@@ -5,7 +5,11 @@
     "main": "app.js",
     "scripts": {
         "start": "node app.js",
-        "dev": "nodemon app.js"
+        "dev": "nodemon app.js",
+        "build": "nodemon app.js"
+    },
+    "now": {
+        "dotenv": "variables.env.now"
     },
     "repository": {
         "type": "git",
