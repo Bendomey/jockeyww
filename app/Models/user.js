@@ -17,14 +17,14 @@ const UserSchema = new mongoose.Schema({
     contact: {
         type: String,
         trim: true,
-        required: true,
-        validate: {
-            validator: function(v) {
-                return /\d{3}-\d{3}-\d{4}/.test(v);
-            },
-            message: props => `${props} is not a valid number!`
-        }
+        required: true
     },
+    isAdmin: {
+        type: String,
+        enum: ['0', '1'],
+        required: true
+    },
+    password: String,
     resetPasswordToken: String,
     resetPasswordExpires: Date,
     created_at: {

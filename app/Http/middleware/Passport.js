@@ -19,7 +19,6 @@ module.exports = function(passport) {
                     bcrypt.compare(password, user.password, (err, isMatch) => {
                         if (err) throw err;
                         if (isMatch) {
-
                             return done(null, user);
                         } else {
                             return done(null, false, { message: 'Password incorrect' });
@@ -34,13 +33,8 @@ module.exports = function(passport) {
     });
 
     passport.deserializeUser(function(id, done) {
-        User.findByPk(id).then((user) => {
-
-            if (user) {
-                done(null, user);
-            } else {
-                done(err, null);
-            }
+        User.findById(id, function(err, user) {
+            done(err, user);
         });
     });
 }

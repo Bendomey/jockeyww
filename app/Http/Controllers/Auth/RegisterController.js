@@ -14,12 +14,12 @@ exports.index = (req, res) => {
 }
 
 exports.validate_user = (req, res, next) => {
-    const { name, email, contact, password, password2 } = req.body;
+    const { password } = req.body;
 
     req.sanitizeBody('name');
     req.checkBody('name', 'Name field cannot be empty').notEmpty();
     req.checkBody('email', 'Email field cannot be empty').notEmpty();
-    req.checkBody('contact', 'Contact field cannot be empty').notEmpty();
+    req.checkBody('full_number', 'Contact field cannot be empty').notEmpty();
     req.checkBody('email', 'Email is invalid').isEmail();
     req.sanitizeBody('email').normalizeEmail({
         remove_dots: true,
@@ -41,12 +41,12 @@ exports.validate_user = (req, res, next) => {
 }
 
 exports.register = (req, res, next) => {
-    const { name, email, contact, password, password2 } = req.body;
+    const { name, email, full_number, password, isAdmin } = req.body;
     User.findOne({
             email
         })
         .then(user => {
-            if (user != null) {
+            if (user) {
                 let errors = [];
                 errors.push({
                     msg: 'Email already exists'
@@ -57,18 +57,23 @@ exports.register = (req, res, next) => {
                 });
                 return next(null);
             } else {
-                User.create({ name, email, contact, password }).then(user => {
-                    bcrypt.genSalt(10, (err, salt) => {
-                        bcrypt.hash(user.password, salt, (err, hash) => {
-                            if (err) throw err
-                            user
-                                .update({ password: hash })
-                                .then(() => {
-                                    req.flash('success_msg', 'You are now registered and can login');
-                                    res.redirect('/users/login');
-                                })
-                                .catch(err => console.log(err));
-                        });
+                let newUser = new User({
+                    name,
+                    email,
+                    contact: full_number,
+                    password,
+                    isAdmin
+                });
+                bcrypt.genSalt(10, (err, salt) => {
+                    bcrypt.hash(newUser.password, salt, (err, hash) => {
+                        if (err) throw err
+                        newUser.password = hash;
+                        newUser.save()
+                            .then((user) => {
+                                req.flash('success_msg', 'You are now registered and can login');
+                                res.redirect('/users/login');
+                            })
+                            .catch(err => console.log(err));
                     });
                 });
             }

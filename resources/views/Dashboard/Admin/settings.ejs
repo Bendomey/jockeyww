@@ -1,0 +1,64 @@
+<% extend('./Layout/app.ejs')%>
+
+
+
+    <div class="col-lg-12">
+        <%- include('../../partials/messages.ejs')%>
+            <div class="card">
+                <div class="card-header">
+                    <strong>Update Profile</strong> Form
+                </div>
+                <div class="card-body card-block">
+                    <form method="POST" action="/users/update_profile">
+                        <input type="hidden" name="id" value="<%= user._id%>" required>
+                        <div class="form-group">
+                            <label for="inputIsValid" class=" form-control-label">Full Name</label>
+                            <input type="text" name="name" disabled value="<%= user.name%>" class="form-control name" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="inputIsValid" class=" form-control-label">Email</label>
+                            <input type="email" name="email" disabled value="<%= user.email%>" class="form-control email" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="inputIsValid" class=" form-control-label">Contact</label>
+                            <input type="tel" disabled value="<%= user.contact%>" class="form-control contact " required>
+                        </div>
+                        <div class="d-flex justify-content-end">
+                            <a class="btn btn-warning editBtn">Edit</a>
+                            <button type="submit" class="btn btn-info updateProfile" hidden>Update</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+    </div>
+
+    <div class="col-lg-12">
+        <div class="card">
+            <div class="card-header">
+                <strong>Update Security</strong> Form
+            </div>
+            <div class="card-body card-block">
+                <form action="/users/update_security" method="POST">
+                    <input type="hidden" name="id" value="<%= user._id%>">
+                    <div class="form-group">
+                        <label for="inputIsValid" class=" form-control-label">Old Password</label>
+                        <input type="password" name="old_password" class="form-control" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="inputIsValid" class=" form-control-label">New Password</label>
+                        <input type="password" name="password" class="form-control password" required>
+                        <small class="form-text text-danger password_error" hidden>Passwords should be more than 6 characters</small>
+                    </div>
+                    <div class="form-group">
+                        <label for="inputIsValid" class=" form-control-label">Confirm Password</label>
+                        <input type="password" name="password2" class="form-control confirm_password" required>
+                        <small class="form-text text-danger confirm_password_error" hidden>Passwords are not equal</small>
+                    </div>
+                    <div class="d-flex justify-content-end">
+                        <button type="submit" class="btn btn-info">Update</button>
+                    </div>
+                </form>
+
+            </div>
+        </div>
+    </div>

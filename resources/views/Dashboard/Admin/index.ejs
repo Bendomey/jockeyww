@@ -1,0 +1,96 @@
+<% extend('./Layout/app.ejs')%>
+
+
+    <div class="col-lg-12 col-xl-12">
+        <div class="card bg-flat-color-3  ">
+            <div class="card-body">
+                <h4 class="card-title m-0  white-color ">Good <span class="greeting"></span>,
+                    <%= user.name%>
+                </h4>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-lg-3 col-md-6">
+            <div class="card">
+                <div class="card-body">
+                    <div class="stat-widget-five">
+                        <div class="stat-icon dib flat-color-1">
+                            <i class="ti-email"></i>
+                        </div>
+                        <div class="stat-content">
+                            <div class="text-left dib">
+                                <div class="stat-text"><span class="count">23569</span></div>
+                                <div class="stat-heading">Newsletter</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-lg-3 col-md-6">
+            <div class="card">
+                <div class="card-body">
+                    <div class="stat-widget-five">
+                        <div class="stat-icon dib flat-color-2">
+                            <i class="pe-7s-cart"></i>
+                        </div>
+                        <div class="stat-content">
+                            <div class="text-left dib">
+                                <div class="stat-text"><span class="count">3435</span></div>
+                                <div class="stat-heading">Sales</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-lg-3 col-md-6">
+            <div class="card">
+                <div class="card-body">
+                    <div class="stat-widget-five">
+                        <div class="stat-icon dib flat-color-3">
+                            <i class="pe-7s-browser"></i>
+                        </div>
+                        <div class="stat-content">
+                            <div class="text-left dib">
+                                <div class="stat-text"><span class="count">349</span></div>
+                                <div class="stat-heading">Templates</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-lg-3 col-md-6">
+            <div class="card">
+                <div class="card-body">
+                    <div class="stat-widget-five">
+                        <div class="stat-icon dib flat-color-4">
+                            <i class="pe-7s-users"></i>
+                        </div>
+                        <div class="stat-content">
+                            <div class="text-left dib">
+                                <div class="stat-text"><span class="count"><%= dj%></span></div>
+                                <div class="stat-heading">DJS</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script>
+        let greeting = document.querySelector('.greeting');
+        let time = new Date().getUTCHours();
+        if (time >= 0 && time < 12) {
+            greeting.append("Morning")
+        } else if (time >= 12 && time < 16) {
+            greeting.append("Afternoon")
+        } else {
+            greeting.append("Evening")
+        }
+    </script>
