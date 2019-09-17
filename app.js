@@ -1,4 +1,5 @@
 const mongoose = require('mongoose');
+const path = require('path');
 
 // Make sure we are running node 7.6+
 const [major, minor] = process.versions.node.split('.').map(parseFloat);
@@ -17,7 +18,8 @@ mongoose.connect(process.env.DATABASE, {
     .catch(err => console.log(err));
 
 //require models
-require('./app/Models/User');
+// require('./app/Models/User');
+require(path.join(__dirname, '/app/Models/User'));
 
 // READY?! Let's go!
 // Start our app!
