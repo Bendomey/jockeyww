@@ -19,7 +19,7 @@ mongoose.connect(process.env.DATABASE, {
 
 //require models
 // require('./app/Models/User');
-require(path.join(__dirname, '/app/Models/User'));
+require(path.join(__dirname, '/Models/User'));
 
 // READY?! Let's go!
 // Start our app!
