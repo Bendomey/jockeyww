@@ -1,34 +1,29 @@
-
-class HomeController {
-    static index(req, res){
-        res.render('Client/index',{
-        	title:'Welcome'
-        });
-    }
-
-    static about(req, res){
-        res.render('Client/about',{
-        	title:'About Us'
-        });
-    }
-
-    static contact(req, res){
-        res.render('Client/contact',{
-        	title:'Contact Us'
-        });
-    }
-
-    static dj(req, res){
-        res.render('Client/dj',{
-        	title:'Djs'
-        });
-    }
-
-    static event(req, res){
-        res.render('Client/event',{
-        	title:'Events'
-        });
-    }
+exports.index = (req, res) => {
+    res.render('Client/index', {
+        title: 'Welcome'
+    });
 }
 
-export default HomeController
+exports.about = (req, res) => {
+    res.render('Client/about', {
+        title: 'About Us'
+    });
+}
+
+exports.contact = (req, res) => {
+    res.render('Client/contact', {
+        title: 'Contact Us'
+    });
+}
+
+exports.dj = (req, res) => {
+    res.render('Client/dj', {
+        title: 'Djs'
+    });
+}
+
+exports.event = (req, res) => {
+    res.render('Client/event', {
+        title: 'Events'
+    });
+}

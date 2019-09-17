@@ -1,7 +1,7 @@
-import express from 'express';
+const express = require('express');
 const Route = express.Router();
 
 
 
 
-export default Route;
+module.exports = Route;

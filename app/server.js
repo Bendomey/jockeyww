@@ -1,18 +1,13 @@
-import express from "express";
-import passport from 'passport';
-import bodyParser from 'body-parser';
-import flash from 'connect-flash';
-import session from 'express-session';
-import expressValidator from 'express-validator';
-import webRouter from '../routes/web';
-import apiRouter from '../routes/api';
-import authRouter from '../routes/auth';
-import ejs from 'ejs';
-import path from 'path';
-import ErrorHandlers from './Config/ErrorHandlers';
-import Authentication from './Config/Passport';
-
-
+const express = require("express");
+const mongoose = require('mongoose');
+const passport = require('passport');
+const bodyParser = require('body-parser');
+const flash = require('connect-flash');
+const session = require('express-session');
+const expressValidator = require('express-validator');
+const path = require('path');
+const ErrorHandlers = require('./Config/ErrorHandlers');
+const Helpers = require('./Config/helpers');
 
 //create instance of the app
 const app = express();
@@ -21,18 +16,29 @@ const app = express();
 require('dotenv').config({ path: 'variables.env' });
 
 // Passport Config
-new Authentication(passport);
+// new Authentication(passport);
+require('./Http/middleware/Passport')(passport);
 
 
+mongoose.connect(process.env.DATABASE, {
+        useNewUrlParser: true
+    })
+    .then(() => console.log('MongoDB Connected'))
+    .catch(err => console.log(err));
 
+//require models
+require('./Models/User');
 
-//set the view engine 
+//set the view engine
 app.engine('ejs', require('express-ejs-extend'));
-app.set('view engine','ejs');
+app.set('view engine', 'ejs');
 
 
 //set where to locate views folder
-app.set('views',path.join(__dirname + '/../resources/views'));
+app.set('views', path.join(__dirname + '/../resources/views'));
+
+// serves up static files from the public folder. Anything in public/ will just be served up as the file it is
+app.use(express.static(path.join(__dirname, '../public')));
 
 //middleware parser
 app.use(express.json());
@@ -47,11 +53,11 @@ app.use(expressValidator());
 
 // Express session
 app.use(
-  session({
-    secret: 'secret',
-    resave: true,
-    saveUninitialized: true
-  })
+    session({
+        secret: 'secret',
+        resave: true,
+        saveUninitialized: true
+    })
 );
 
 // Passport middleware
@@ -63,49 +69,42 @@ app.use(flash());
 
 // Global variables
 app.use(function(req, res, next) {
-  res.locals.user = req.user || null;
-  res.locals.success_msg = req.flash('success_msg');
-  res.locals.error_msg = req.flash('error_msg');
-  res.locals.error = req.flash('error');
-  next();
+    res.locals.h = Helpers;
+    res.locals.user = req.user || null;
+    res.locals.success_msg = req.flash('success_msg');
+    res.locals.error_msg = req.flash('error_msg');
+    res.locals.error = req.flash('error');
+    next();
 });
 
-
 //bring in web routes
-app.use("/",webRouter);
+app.use("/", require('../routes/web'));
 
 //bring in api routes
-app.use('/api',apiRouter);
+app.use('/api', require('../routes/api'));
 
 //bring in auth routes
-app.use('/users',authRouter);
-
-//set static folder
-// app.use('/static',express.static('../public'));
-
-// serves up static files from the public folder. Anything in public/ will just be served up as the file it is
-app.use(express.static(path.join(__dirname, '../public')));
+app.use('/users', require('../routes/auth'));
 
 // If that above routes didnt work, we 404 them and forward to error handler
 app.use(ErrorHandlers.notFound);
 
 // Otherwise this was a really bad error we didn't expect! Shoot eh
 if (process.env.NODE_ENV === 'development') {
-  /* Development Error Handler - Prints stack trace */
-  app.use(ErrorHandlers.developmentErrors);
-}else{
-  // production error handler
-  app.use(ErrorHandlers.productionErrors);
+    /* Development Error Handler - Prints stack trace */
+    app.use(ErrorHandlers.developmentErrors);
+} else {
+    // production error handler
+    app.use(ErrorHandlers.productionErrors);
 }
-
 
 const PORT = process.env.PORT || 5000;
 
 //now listen on the port for requests
-app.listen(PORT,(error)=>{
-    if(error) throw error;
+app.listen(PORT, (error) => {
+    if (error) throw error;
     console.log(`Server running and receiving request on port: ${PORT}`)
 });
 
 
-export default app;
+module.exports = app;
