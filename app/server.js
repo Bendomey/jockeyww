@@ -1,4 +1,5 @@
 const express = require("express");
+const mongoose = require('mongoose');
 const passport = require('passport');
 const bodyParser = require('body-parser');
 const flash = require('connect-flash');
@@ -7,6 +8,25 @@ const expressValidator = require('express-validator');
 const path = require('path');
 const ErrorHandlers = require('./Config/ErrorHandlers');
 const Helpers = require('./Config/helpers');
+
+// import environmental variables from our variables.env file
+require('dotenv').config({ path: 'variables.env' });
+
+// Make sure we are running node 7.6+
+const [major, minor] = process.versions.node.split('.').map(parseFloat);
+if (major < 7 || (major === 7 && minor <= 5)) {
+    console.log('🛑 🌮 🐶 💪 💩\nHey You! \n\t ya you! \n\t\tBuster! \n\tYou\'re on an older version of node that doesn\'t support the latest and greatest things we are learning (Async + Await)! Please go to nodejs.org and download version 7.6 or greater. 👌\n ');
+    process.exit();
+}
+
+mongoose.connect(process.env.DATABASE, {
+        useNewUrlParser: true
+    })
+    .then(() => console.log('MongoDB Connected'))
+    .catch(err => console.log(err));
+
+//require models
+require('./Models/User');
 
 //create instance of the app
 const app = express();
@@ -83,5 +103,13 @@ if (process.env.NODE_ENV === 'development') {
     // production error handler
     app.use(ErrorHandlers.productionErrors);
 }
+
+const PORT = process.env.PORT || 5000;
+
+//now listen on the port for requests
+app.listen(PORT, (error) => {
+    if (error) throw error;
+    console.log(`Server running and receiving request on port: ${PORT}`)
+});
 
 module.exports = app;
