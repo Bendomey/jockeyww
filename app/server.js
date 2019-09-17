@@ -26,7 +26,7 @@ mongoose.connect(process.env.DATABASE, {
     .catch(err => console.log(err));
 
 //require models
-require('./Models/User');
+require('Models/User');
 
 //create instance of the app
 const app = express();
